@@ -1,115 +1,384 @@
- // src/pages/About.jsx
-import React from 'react';
-import { Briefcase, Code, Zap } from 'lucide-react';
+// src/pages/About.jsx
+import React, { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useInView,
+} from "framer-motion";
+import {
+  GraduationCap,
+  Monitor,
+  ArrowRight,
+  Download,
+} from "lucide-react";
 
+/* ─── Timeline Data ─────────────────────────────────────────── */
+const timelineItems = [
+  // {
+  //   side: "left",
+  //   date: "July 2025 – Aug 2025",
+  //   icon: Monitor,
+  //   iconColor: "#2dd4bf", // Emerald
+  //   title: " Looking for a internship ",
+  //   subtitle: "Full Stack Developer Intern (MERN) · Remote, Noida, Ghaziabad",
+  //   points: [
+  //     "Developed and deployed a full-stack web application using React.js, Node.js, and Express.js, improving overall system performance by nearly 50%.",
+  //     "Designed and implemented RESTful APIs and integrated MongoDB for efficient data storage and retrieval.",
+  //     "Worked under structured mentorship, gaining hands-on experience with industry-standard MERN workflows and scalable backend development.",
+  //   ],
+  // },
+  {
+    side: "right",
+    date: "2023 – 2026",
+    icon: GraduationCap,
+    iconColor: "#818cf8", // Indigo
+    title: "Ajay Kumar Garg Engineering College",
+    subtitle: "B.Tech in Computer Science & Engineering · Ghaziabad, Uttar Pradesh",
+    points: ["CGPA: 8.05", "Focused on MERN stack, DSA, and System Design."],
+  },
+  {
+    side: "left",
+    date: "2020 – 2023",
+    icon: GraduationCap,
+    iconColor: "#facc15", // Yellow
+    title: "Mahatma Gandhi Inter College gorakhpur",
+    subtitle: "10+2 · Uttar Pradesh",
+    points: ["Percentage: 80%"],
+  },
+  {
+    side: "right",
+    date: "2018 – 2019",
+    icon: GraduationCap,
+    iconColor: "#a78bfa", // Purple
+    title: "DN inter College Maharajganj",
+    subtitle: "High School · Uttar Pradesh",
+    points: ["Percentage: 83.33%"],
+  },
+];
+
+/* ─── Timeline Card ─────────────────────────────────────────── */
+const TimelineCard = ({ item }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.25 });
+  const isLeft = item.side === "left";
+  const Icon = item.icon;
+
+  return (
+    <div ref={ref} className="relative flex items-center justify-center w-full mb-16 md:mb-24">
+      {/* Center node */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={inView ? { scale: 1, opacity: 1 } : {}}
+        transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 200, damping: 20 }}
+        className="absolute left-1/2 -translate-x-1/2 z-20 flex items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 bg-slate-800"
+        style={{
+          border: `2px solid ${item.iconColor}`,
+          boxShadow: `0 0 20px ${item.iconColor}40`,
+        }}
+      >
+        <Icon size={20} style={{ color: item.iconColor }} />
+      </motion.div>
+
+      {/* Connector arrow from node toward card (Hidden on small screens) */}
+      <motion.div
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={inView ? { scaleX: 1, opacity: 1 } : {}}
+        transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+        className="hidden md:block absolute left-1/2 top-7 h-px w-[calc(6%-0px)] z-10"
+        style={{
+          background: `${item.iconColor}60`,
+          transformOrigin: isLeft ? "left" : "right",
+          transform: isLeft ? "translateX(28px)" : "translateX(calc(-100% - 28px))",
+        }}
+      />
+
+      {/* Date */}
+      <motion.span
+        initial={{ opacity: 0, y: 10 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+        className="absolute text-sm font-bold tracking-wide z-10"
+        style={{
+          color: item.iconColor,
+          left: isLeft ? "calc(50% + 44px)" : "auto",
+          right: isLeft ? "auto" : "calc(50% + 44px)",
+          top: "14px",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {item.date}
+      </motion.span>
+
+      {/* Card — slides smoothly from left or right */}
+      <motion.div
+        initial={{
+          x: isLeft ? -80 : 80,
+          opacity: 0,
+          filter: "blur(10px)",
+        }}
+        animate={
+          inView
+            ? { x: 0, opacity: 1, filter: "blur(0px)" }
+            : {}
+        }
+        transition={{
+          duration: 0.8,
+          delay: 0.15,
+          ease: [0.25, 0.1, 0.25, 1], // Very smooth easing
+        }}
+        whileHover={{
+          y: -5,
+          boxShadow: `0 20px 40px ${item.iconColor}15`,
+          borderColor: `${item.iconColor}50`,
+        }}
+        className="relative rounded-2xl p-6 md:p-8 backdrop-blur-xl transition-all duration-300 w-[85%] md:w-[43%]"
+        style={{
+          marginLeft: isLeft ? "0" : "auto",
+          marginRight: isLeft ? "auto" : "0",
+          background: "rgba(30, 41, 59, 0.6)", // Match Hero's slate tones
+          border: "1px solid rgba(148,163,184,0.1)",
+          marginTop: "50px", // Offset for mobile stacking
+        }}
+      >
+        {/* Top shimmer line */}
+        <motion.div
+          className="absolute top-0 left-0 right-0 h-px rounded-t-2xl"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${item.iconColor}80, transparent)`,
+          }}
+          animate={{ opacity: [0.3, 1, 0.3] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: Math.random() * 2 }}
+        />
+
+        <h3 className="text-xl font-bold text-white mb-1 tracking-tight">{item.title}</h3>
+        <p className="text-sm mb-5 font-medium" style={{ color: item.iconColor }}>
+          {item.subtitle}
+        </p>
+        {item.points.map((pt, i) => (
+          <p key={i} className="text-sm leading-relaxed mb-2 text-slate-300 font-light">
+            • {pt}
+          </p>
+        ))}
+      </motion.div>
+    </div>
+  );
+};
+
+/* ─── Scroll-driven timeline line ──────────────────────────── */
+const TimelineLine = ({ children }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start center", "end center"] });
+  const scaleY = useSpring(scrollYProgress, { stiffness: 60, damping: 20 }); // Smoother spring
+
+  return (
+    <div ref={ref} className="relative">
+      {/* Background Track */}
+      <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-slate-700/50" />
+      
+      {/* Glowing progress line */}
+      <motion.div
+        className="absolute left-1/2 top-0 w-[2px] origin-top -translate-x-1/2"
+        style={{
+          scaleY,
+          height: "100%",
+          background: "linear-gradient(to bottom, #818cf8, #34d399, #a78bfa)",
+          boxShadow: "0 0 15px rgba(99,102,241,0.5)",
+        }}
+      />
+
+      {/* Top dot */}
+      <motion.div
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ type: "spring", stiffness: 200, damping: 20 }}
+        className="absolute left-1/2 -translate-x-1/2 top-0 w-3 h-3 rounded-full z-10 bg-indigo-400 shadow-[0_0_15px_#818cf8]"
+      />
+      {/* Bottom dot */}
+      <motion.div
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ type: "spring", stiffness: 200, damping: 20 }}
+        className="absolute left-1/2 -translate-x-1/2 bottom-0 w-3 h-3 rounded-full z-10 bg-purple-400 shadow-[0_0_15px_#a78bfa]"
+      />
+
+      <div className="py-10">{children}</div>
+    </div>
+  );
+};
+
+/* ─── Main ──────────────────────────────────────────────────── */
 const About = () => {
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const rawY = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  const smoothY = useSpring(rawY, { stiffness: 60, damping: 25 });
+
   return (
     <section
+      ref={heroRef}
       id="about"
-      className="relative py-32 sm:py-24 bg-gradient-to-tr from-gray-900 via-black to-gray-100 overflow-hidden"
+      // Reduced top padding (pt-12 instead of py-24) to remove upper margin gap
+      className="relative overflow-hidden pt-12 pb-24 px-6 sm:px-8 lg:px-12"
+      style={{ background: "rgb(26,38,55)" }} // Exact match to Hero background
     >
-      {/* Background Glow Effect */}
-      <div className="absolute top-1/4 left-0 w-96 h-96 bg-indigo-200/40 rounded-full filter blur-3xl opacity-30 animate-float"></div>
-      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-violet-200/40 rounded-full filter blur-3xl opacity-30 animate-float-delayed"></div>
+      {/* Subtle Grid Background */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-20"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(99,102,241,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.2) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
 
-      {/* Decorative Lines */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-0 w-full h-[2px] bg-gray-200/60"></div>
-        <div className="absolute top-2/3 left-0 w-full h-[2px] bg-gray-300/70"></div>
-        <div className="absolute left-1/4 top-0 h-full w-[2px] bg-gray-200/50"></div>
-      </div>
+      {/* Ambient Glows Matching Hero */}
+      <motion.div
+        className="absolute -right-40 top-0 w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)' }}
+        animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.8, 0.6] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute -left-40 bottom-1/4 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(45,212,191,0.1) 0%, transparent 70%)' }}
+        animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.7, 0.5] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+      />
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Heading */}
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tight">
-            <span className="inline-block transition-transform duration-500 hover:scale-105">
-              ABOUT
-            </span>
-            &nbsp;
-            <span className="inline-block bg-gradient-to-r from-indigo-600 to-violet-500 bg-clip-text text-transparent transition-transform duration-500 hover:scale-110">
-              ME
-            </span>
+      <motion.div style={{ y: smoothY }} className="relative z-10 max-w-7xl mx-auto">
+        
+        {/* ── Bio Section ─────────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mb-24 mt-8"
+        >
+           
+
+          {/* Heading - Font matches Hero now */}
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight mb-12">
+             About me
           </h2>
-          <p className="mt-4 text-xl text-white font-medium">
-            A passionate learner, builder, and problem solver.
-          </p>
-        </div>
 
-        {/* Core Narrative */}
-        <div className="max-w-4xl mx-auto mb-20 animate-fade-in-up animation-delay-200">
-          <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-200 hover:border-indigo-400 hover:shadow-[0_0_25px_rgba(99,102,241,0.2)] transition-all duration-500 hover:scale-[1.02]">
-            <p className="text-lg text-gray-700 leading-relaxed">
-              I am a <span className="font-bold text-indigo-600">3rd-year B.Tech student</span> with a deep interest in technology and <span className="font-bold text-indigo-600">personal development</span>. My journey has been focused on transforming ideas into robust applications, primarily using the <span className="font-bold text-indigo-600">MERN stack</span>. I consider myself a good listener, observer, and problem solver, always eager to grow both professionally and personally.
-            </p>
-            <p className="mt-4 text-lg text-gray-700 leading-relaxed">
-              I am actively sharpening my <span className="font-bold text-violet-600">Data Structures and Algorithms (DSA)</span> skills to enhance my problem-solving ability, and I am highly dedicated to improving my <span className="font-bold text-violet-600">English communication skills</span> for better fluency and public confidence.
-            </p>
-          </div>
-        </div>
+          <div className="grid lg:grid-cols-5 gap-12 items-start">
+            {/* Text */}
+            <div className="lg:col-span-3">
+              <motion.p
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+                className="text-lg sm:text-xl leading-relaxed mb-6 text-slate-300 font-light"
+              >
+                I'm a passionate{" "}
+                <span className="font-semibold text-emerald-400">
+                  Backend-Oriented Full Stack Developer
+                </span>{" "}
+                who loves turning ideas into scalable, user-friendly web applications and solving critical problems with{" "}
+                <span className="font-semibold text-indigo-400">DSA & Algorithms</span>.
+              </motion.p>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Card 1 */}
-          <div className="group bg-white p-6 rounded-2xl shadow-lg border border-gray-200 hover:border-indigo-500 hover:shadow-[0_0_25px_rgba(99,102,241,0.2)] transition-all duration-500 hover:-translate-y-3 animate-fade-in-up animation-delay-400">
-            <div className="w-16 h-16 bg-indigo-50 rounded-xl flex items-center justify-center mb-5 shadow-md group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
-              <Briefcase className="w-8 h-8 text-indigo-600" />
+              <motion.p
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+                className="text-base sm:text-lg leading-relaxed mb-6 text-slate-400 font-light"
+              >
+                I specialize in building modern web products using{" "}
+                <span className="font-medium text-white">MERN stack, clean UI design, optimized backend logic</span>, and performance-focused development. With a strong foundation in DSA and CS fundamentals, I enjoy writing efficient, maintainable code.
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+                className="text-base sm:text-lg leading-relaxed mb-10 text-slate-400 font-light"
+              >
+                Currently pursuing B.Tech in CSE — I've worked on AI chatbots, rental platforms, and healthcare systems. Looking to contribute my skills to a growth-oriented tech team.
+              </motion.p>
+
+              {/* Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="flex flex-wrap gap-5"
+              >
+                <motion.a
+                  href="#contact"
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(99,102,241,0.4)" }}
+                  whileTap={{ scale: 0.95 }}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-emerald-600 shadow-lg transition-all"
+                >
+                  Hire Me <ArrowRight size={18} />
+                </motion.a>
+                <motion.a
+                  href="/resume.pdf"
+                  whileHover={{ scale: 1.05, backgroundColor: "rgba(99,102,241,0.1)" }}
+                  whileTap={{ scale: 0.95 }}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-sm font-bold text-slate-200 border-2 border-slate-600 hover:border-indigo-400 transition-all"
+                >
+                  Resume <Download size={18} />
+                </motion.a>
+              </motion.div>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Web Development</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Proficient in the <span className="font-semibold text-gray-900">MERN Stack</span>. Built projects like an <span className="font-semibold text-gray-900">e-commerce site</span> and an <span className="font-semibold text-gray-900">agri-platform</span>.
-            </p>
-          </div>
 
-          {/* Card 2 */}
-          <div className="group bg-white p-6 rounded-2xl shadow-lg border border-gray-200 hover:border-green-500 hover:shadow-[0_0_25px_rgba(34,197,94,0.2)] transition-all duration-500 hover:-translate-y-3 animate-fade-in-up animation-delay-600">
-            <div className="w-16 h-16 bg-green-50 rounded-xl flex items-center justify-center mb-5 shadow-md group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
-              <Code className="w-8 h-8 text-green-600" />
+            {/* Stats Panel */}
+            <div className="lg:col-span-2 grid grid-cols-2 gap-5">
+              {[
+                { value: "15+", label: "Projects", color: "#818cf8" },
+                { value: "300+", label: "DSA Problems", color: "#34d399" },
+                { value: "8.05", label: "CGPA", color: "#a78bfa" },
+                { value: "1+", label: "Internship", color: "#facc15" },
+              ].map((s, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 + 0.2, duration: 0.6, ease: "easeOut" }}
+                  whileHover={{ y: -5, borderColor: s.color, boxShadow: `0 10px 30px ${s.color}15` }}
+                  className="rounded-2xl p-6 text-center bg-slate-800/40 border border-slate-700/50 backdrop-blur-xl transition-all duration-300"
+                >
+                  <p className="text-3xl sm:text-4xl font-extrabold mb-2" style={{ color: s.color }}>{s.value}</p>
+                  <p className="text-xs uppercase tracking-widest text-slate-400 font-medium">{s.label}</p>
+                </motion.div>
+              ))}
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Problem Solving & DSA</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Dedicated to mastering <span className="font-semibold text-gray-900">Data Structures and Algorithms</span> to translate complex problems into efficient code.
-            </p>
           </div>
+        </motion.div>
 
-          {/* Card 3 */}
-          <div className="group bg-white p-6 rounded-2xl shadow-lg border border-gray-200 hover:border-violet-500 hover:shadow-[0_0_25px_rgba(139,92,246,0.2)] transition-all duration-500 hover:-translate-y-3 animate-fade-in-up animation-delay-800">
-            <div className="w-16 h-16 bg-violet-50 rounded-xl flex items-center justify-center mb-5 shadow-md group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
-              <Zap className="w-8 h-8 text-violet-600" />
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Aspiring AI Explorer</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Aspiring to learn <span className="font-semibold text-gray-900">Artificial Intelligence</span> and explore its meaningful applications, bridging web and machine learning.
-            </p>
-          </div>
-        </div>
-      </div>
+        {/* ── Timeline heading ─────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center mb-16 pt-10"
+        >
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-4">
+            Timeline
+          </h2>
+          <p className="text-lg text-slate-400 font-light">Education & Experience</p>
+        </motion.div>
 
-      {/* Animations */}
-      <style jsx>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fade-in-up {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0) rotate(0deg); }
-          33% { transform: translate(30px, -30px) rotate(5deg); }
-          66% { transform: translate(-20px, 20px) rotate(-5deg); }
-        }
-        .animate-fade-in { animation: fade-in 0.8s ease-out forwards; }
-        .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
-        .animate-float { animation: float 20s ease-in-out infinite; }
-        .animate-float-delayed { animation: float 20s ease-in-out infinite; animation-delay: -10s; }
-        .animation-delay-200 { animation-delay: 0.2s; }
-        .animation-delay-400 { animation-delay: 0.4s; }
-        .animation-delay-600 { animation-delay: 0.6s; }
-        .animation-delay-800 { animation-delay: 0.8s; }
-      `}</style>
+        {/* ── Timeline ─────────────────────────────────────── */}
+        <TimelineLine>
+          {timelineItems.map((item, i) => (
+            <TimelineCard key={i} item={item} />
+          ))}
+        </TimelineLine>
+        
+      </motion.div>
     </section>
   );
 };
