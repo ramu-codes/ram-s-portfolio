@@ -1,49 +1,68 @@
- import React from "react";
-import { Github, Linkedin, Mail } from "lucide-react";
+// src/components/Footer.jsx
+import React from "react";
+import { motion } from "framer-motion";
+import { Github, Linkedin, Mail, ArrowUp, Heart } from "lucide-react";
+
+const socials = [
+  { icon: Github, href: "https://github.com/dashboard", label: "GitHub" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/ramu-chaurasiya-8b9933295/", label: "LinkedIn" },
+  { icon: Mail, href: "mailto:ramucodes@gmail.com", label: "Email" },
+];
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-black py-10 text-gray-300">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+    <footer
+      className="relative"
+      style={{
+        background: "rgb(26, 38, 55)",
+        borderTop: "1px solid rgba(148,163,184,0.1)",
+      }}
+    >
+      <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        
+        {/* Left: copyright */}
+        <p className="text-xs flex items-center gap-1.5 order-2 sm:order-1 text-slate-400">
+          © {currentYear} RAM · Made with
+          <motion.span
+            animate={{ scale: [1, 1.35, 1] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Heart size={12} fill="#818cf8" className="text-indigo-400" />
+          </motion.span>
+        </p>
 
-        {/* Branding & Info */}
-        <div className="text-center md:text-left">
-          <h2 className="text-lg font-semibold tracking-wide text-white">RAM</h2>
-          <p className="text-sm font-medium text-white">
-            Building bold, responsive web experiences.
-          </p>
-          <p className="text-xs text-white mt-1">
-            Ghaziabad, India &bull; &copy; {currentYear}
-          </p>
+        {/* Center: socials */}
+        <div className="flex items-center gap-2 order-1 sm:order-2">
+          {socials.map((s) => {
+            const Icon = s.icon;
+            return (
+              <motion.a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                whileHover={{ y: -3 }}
+                whileTap={{ scale: 0.92 }}
+                className="p-2 rounded-lg text-slate-400 hover:text-indigo-400 transition-colors"
+              >
+                <Icon size={18} />
+              </motion.a>
+            );
+          })}
         </div>
 
-        {/* Social Links */}
-        <div className="flex items-center space-x-4">
-          <a
-            href="https://github.com/dashboard"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 bg-gray-800 rounded-full text-white hover:text-white hover:bg-indigo-600 transition-all duration-300"
-          >
-            <Github className="w-5 h-5" />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/ramu-chaurasiya-8b9933295/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 bg-gray-800 rounded-full text-white hover:text-white hover:bg-indigo-600 transition-all duration-300"
-          >
-            <Linkedin className="w-5 h-5" />
-          </a>
-          <a
-            href="mailto:ramucodes@gmail.com"
-            className="p-2 bg-gray-800 rounded-full text-white hover:text-white hover:bg-indigo-600 transition-all duration-300"
-          >
-            <Mail className="w-5 h-5" />
-          </a>
-        </div>
+        {/* Right: back to top */}
+        <motion.button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          whileHover={{ y: -3 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center gap-1.5 text-xs order-3 cursor-pointer text-slate-400 hover:text-indigo-400 transition-colors"
+        >
+          <ArrowUp size={14} /> Top
+        </motion.button>
       </div>
     </footer>
   );

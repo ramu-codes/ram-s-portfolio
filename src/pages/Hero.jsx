@@ -124,7 +124,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[100vh] flex items-center overflow-hidden py-28"
+      className="relative min-h-[100vh] flex items-center overflow-hidden pt-16 pb-8"
       style={{ background: 'rgb(26,38,55)' }} // Modern dark blue-gray background
     >
       {/* Subtle ambient glow – left */}
@@ -368,19 +368,7 @@ const Hero = () => {
       </div>
 
       {/* Scroll hint */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.5 }}
-      >
-        <span className="text-xs uppercase tracking-widest text-slate-500 font-mono">Discover More</span>
-        <motion.div
-          className="w-px h-12 bg-gradient-to-b from-indigo-400/80 to-transparent"
-          animate={{ scaleY: [0, 1, 0], originY: 0 }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </motion.div>
+       
     </section>
   );
 };
