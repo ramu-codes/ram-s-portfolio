@@ -7,4 +7,16 @@ Portfolio: https://ram-s-portfolio-olive.vercel.app/
  Currently Learning: Artificial Intelligence & Advanced DSA
 
 
+ how to push and commmit on github
+echo "# student_growth_tracker" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/ramu-codes/student_growth_tracker.git
+git push -u origin main
+
+git remote add origin https://github.com/ramu-codes/student_growth_tracker.git
+git branch -M main
+git push -u origin main
  
