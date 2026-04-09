@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import emailjs from "emailjs-com";
 import { motion, useInView } from "framer-motion";
 import {
-  Mail, Linkedin, Github, Phone, MapPin,
+  Mail, Linkedin, Github, MapPin,
   Send, CheckCircle, AlertCircle, ArrowRight, Copy, Check,
 } from "lucide-react";
 
@@ -72,12 +72,17 @@ const SocialCard = ({ href, icon: Icon, label, sublabel, color, index }) => {
 
 /* ─── Copy email button ──────────────────────────────────────── */
 const CopyEmail = () => {
-  const [copied, setCopied] = useState(false);
+  const [copyState, setCopyState] = useState("idle");
 
   const handleCopy = () => {
+    if (!navigator?.clipboard) {
+      setCopyState("unsupported");
+      setTimeout(() => setCopyState("idle"), 2200);
+      return;
+    }
     navigator.clipboard.writeText(EMAIL);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2200);
+    setCopyState("copied");
+    setTimeout(() => setCopyState("idle"), 2200);
   };
 
   return (
@@ -119,24 +124,24 @@ const CopyEmail = () => {
       </div>
 
       <motion.div
-        animate={{ scale: copied ? [1, 1.2, 1] : 1 }}
+        animate={{ scale: copyState !== "idle" ? [1, 1.2, 1] : 1 }}
         transition={{ duration: 0.3 }}
         className="shrink-0"
       >
-        {copied
+        {copyState === "copied"
           ? <Check size={18} style={{ color: "#34d399" }} />
           : <Copy size={18} className="text-slate-500 group-hover:text-indigo-400 transition-colors" />}
       </motion.div>
 
-      {copied && (
+      {copyState !== "idle" && (
         <motion.span
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
           className="absolute right-14 text-xs font-semibold"
-          style={{ color: "#34d399" }}
+          style={{ color: copyState === "copied" ? "#34d399" : "#facc15" }}
         >
-          Copied!
+          {copyState === "copied" ? "Copied!" : "Clipboard not supported"}
         </motion.span>
       )}
     </motion.button>
@@ -178,13 +183,22 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setStatus("sending");
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      setStatus("config_error");
+      setTimeout(() => setStatus("idle"), 5000);
+      return;
+    }
 
     emailjs
       .sendForm(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        serviceId,
+        templateId,
         e.target,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        publicKey
       )
       .then(() => {
         setStatus("success");
@@ -389,6 +403,16 @@ const Contact = () => {
                   style={{ background: "rgba(248,113,113,0.1)", border: "1px solid rgba(248,113,113,0.2)", color: "#f87171" }}
                 >
                   <AlertCircle size={18} /> Something went wrong. Please try again or email me directly.
+                </motion.div>
+              )}
+              {status === "config_error" && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-3 text-sm font-medium rounded-xl px-5 py-4"
+                  style={{ background: "rgba(248,113,113,0.1)", border: "1px solid rgba(248,113,113,0.2)", color: "#f87171" }}
+                >
+                  <AlertCircle size={18} /> Email service is not configured yet. Please contact me directly at {EMAIL}.
                 </motion.div>
               )}
 

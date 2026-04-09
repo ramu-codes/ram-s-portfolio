@@ -7,7 +7,7 @@ import {
   useSpring,
   useInView,
 } from "framer-motion";
-import { GraduationCap, Monitor, ArrowRight, Download } from "lucide-react";
+import { GraduationCap, Monitor, ArrowRight, Mail } from "lucide-react";
 
 /* ─── Timeline Data ─────────────────────────────────────────── */
 const timelineItems = [
@@ -278,12 +278,12 @@ const About = () => {
         >
            
 
-          <h1
-            className="text-5xl md:text-7xl font-black tracking-tight mb-10 leading-tight"
-            style={{ fontFamily: "Georgia, serif", color: "#f1f5f9" }}
-          >
-            About me
-          </h1>
+            <h1
+              className="text-5xl md:text-7xl font-black tracking-tight mb-10 leading-tight"
+              style={{ color: "#f1f5f9" }}
+            >
+              About me
+            </h1>
 
           <div className="grid md:grid-cols-5 gap-10 items-start">
             <div className="md:col-span-3">
@@ -344,13 +344,13 @@ const About = () => {
                   Hire Me <ArrowRight size={16} />
                 </motion.a>
                 <motion.a
-                  href="/resume.pdf"
+                  href="#contact"
                   whileHover={{ scale: 1.06, borderColor: "#6366f1", color: "#818cf8" }}
                   whileTap={{ scale: 0.97 }}
                   className="inline-flex items-center gap-2 px-7 py-3 rounded-xl text-sm font-bold"
                   style={{ border: "1px solid rgba(99,102,241,0.35)", color: "#94a3b8", transition: "all 0.3s" }}
                 >
-                  Resume <Download size={16} />
+                  Contact <Mail size={16} />
                 </motion.a>
               </motion.div>
             </div>
@@ -395,7 +395,7 @@ const About = () => {
         >
           <h2
             className="text-4xl md:text-5xl font-black"
-            style={{ fontFamily: "Georgia, serif", color: "#f1f5f9" }}
+            style={{ color: "#f1f5f9" }}
           >
             Timeline
           </h2>

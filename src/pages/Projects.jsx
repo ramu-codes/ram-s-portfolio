@@ -11,8 +11,8 @@ const projectData = [
       "A complete online shopping system featuring user authentication, product management, cart functionality, and secure payment gateway integration.",
     technologies: ["React", "Node.js", "Express", "MongoDB", "Redux", "Stripe"],
     accentColor: "#818cf8",
-    githubLink: "#",
-    liveLink: "#",
+    githubLink: "",
+    liveLink: "",
   },
   {
     id: 2,
@@ -21,8 +21,8 @@ const projectData = [
       "A data-driven platform designed to connect farmers with resources, market trends, and modern techniques, built with a focus on data visualization.",
     technologies: ["MERN Stack", "Chart.js", "Tailwind CSS"],
     accentColor: "#34d399",
-    githubLink: "#",
-    liveLink: "#",
+    githubLink: "",
+    liveLink: "",
   },
   {
     id: 3,
@@ -31,8 +31,8 @@ const projectData = [
       "A collaborative to-do app with drag-and-drop functionality, real-time updates, and user-specific task lists, emphasizing efficient state management.",
     technologies: ["React (Vite)", "Context API", "Express", "MongoDB"],
     accentColor: "#a78bfa",
-    githubLink: "#",
-    liveLink: "#",
+    githubLink: "",
+    liveLink: "",
   },
 ];
 
@@ -40,6 +40,8 @@ const projectData = [
 const ProjectCard = ({ project, index }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
+  const hasGithubLink = Boolean(project.githubLink);
+  const hasLiveLink = Boolean(project.liveLink);
 
   return (
     <motion.div
@@ -92,7 +94,6 @@ const ProjectCard = ({ project, index }) => {
         {/* Title */}
         <h3
           className="text-lg font-bold text-white mb-3 leading-snug pr-6"
-          style={{ fontFamily: "Georgia, serif" }}
         >
           {project.title}
         </h3>
@@ -132,32 +133,60 @@ const ProjectCard = ({ project, index }) => {
 
         {/* Links */}
         <div className="flex items-center gap-3">
-          <motion.a
-            href={project.githubLink}
-            whileHover={{ scale: 1.05, borderColor: project.accentColor, color: project.accentColor }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold"
-            style={{
-              border: "1px solid rgba(148,163,184,0.2)",
-              color: "#94a3b8",
-              transition: "all 0.25s",
-            }}
-          >
-            <Github size={14} /> GitHub
-          </motion.a>
-          <motion.a
-            href={project.liveLink}
-            whileHover={{ scale: 1.05, boxShadow: `0 0 24px ${project.accentColor}50` }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white"
-            style={{
-              background: `linear-gradient(135deg, ${project.accentColor}cc, ${project.accentColor}88)`,
-              boxShadow: `0 0 14px ${project.accentColor}30`,
-              transition: "box-shadow 0.25s, transform 0.25s",
-            }}
-          >
-            <ExternalLink size={14} /> Live Demo
-          </motion.a>
+          {hasGithubLink ? (
+            <motion.a
+              href={project.githubLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05, borderColor: project.accentColor, color: project.accentColor }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold"
+              style={{
+                border: "1px solid rgba(148,163,184,0.2)",
+                color: "#94a3b8",
+                transition: "all 0.25s",
+              }}
+            >
+              <Github size={14} /> GitHub
+            </motion.a>
+          ) : (
+            <span
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold"
+              style={{
+                border: "1px solid rgba(148,163,184,0.2)",
+                color: "#64748b",
+              }}
+            >
+              <Github size={14} /> Coming Soon
+            </span>
+          )}
+          {hasLiveLink ? (
+            <motion.a
+              href={project.liveLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05, boxShadow: `0 0 24px ${project.accentColor}50` }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white"
+              style={{
+                background: `linear-gradient(135deg, ${project.accentColor}cc, ${project.accentColor}88)`,
+                boxShadow: `0 0 14px ${project.accentColor}30`,
+                transition: "box-shadow 0.25s, transform 0.25s",
+              }}
+            >
+              <ExternalLink size={14} /> Live Demo
+            </motion.a>
+          ) : (
+            <span
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold"
+              style={{
+                border: "1px solid rgba(148,163,184,0.2)",
+                color: "#64748b",
+              }}
+            >
+              <ExternalLink size={14} /> Coming Soon
+            </span>
+          )}
         </div>
       </div>
     </motion.div>
@@ -244,7 +273,7 @@ const Projects = () => {
                 animate={headingInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
                 transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                 className="text-5xl md:text-7xl font-black tracking-tight leading-tight mb-3"
-                style={{ fontFamily: "Georgia, serif", color: "#f1f5f9" }}
+                style={{ color: "#f1f5f9" }}
               >
                 My{" "}
                 <span
@@ -271,7 +300,7 @@ const Projects = () => {
 
             {/* View all link */}
             <motion.a
-              href="https://github.com"
+              href="https://github.com/ramu-codes"
               target="_blank"
               rel="noreferrer"
               initial={{ opacity: 0, x: 20 }}

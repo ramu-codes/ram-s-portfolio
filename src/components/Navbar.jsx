@@ -7,6 +7,7 @@ const navItems = [
   { name: 'About', href: '#about' },
   { name: 'Projects', href: '#projects' },
   { name: 'Skills', href: '#skills' },
+  { name: 'Contact', href: '#contact' },
 ];
 
 const Navbar = () => {
@@ -66,6 +67,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
               className="inline-flex items-center justify-center p-2 rounded-md text-slate-300 hover:text-indigo-400 hover:bg-slate-700/40 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition-colors"
             >
               {isOpen ? (
