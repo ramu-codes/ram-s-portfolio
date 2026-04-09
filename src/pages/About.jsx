@@ -7,7 +7,7 @@ import {
   useSpring,
   useInView,
 } from "framer-motion";
-import { GraduationCap, Monitor, ArrowRight, Download } from "lucide-react";
+import { GraduationCap, Monitor, ArrowRight, Mail } from "lucide-react";
 
 /* ─── Timeline Data ─────────────────────────────────────────── */
 const timelineItems = [
@@ -350,7 +350,7 @@ const About = () => {
                   className="inline-flex items-center gap-2 px-7 py-3 rounded-xl text-sm font-bold"
                   style={{ border: "1px solid rgba(99,102,241,0.35)", color: "#94a3b8", transition: "all 0.3s" }}
                 >
-                  Contact <Download size={16} />
+                  Contact <Mail size={16} />
                 </motion.a>
               </motion.div>
             </div>

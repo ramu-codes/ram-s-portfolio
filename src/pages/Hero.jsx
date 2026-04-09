@@ -2,7 +2,7 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import avatarPlaceholder from '../assets/profile-pic.jpg';
-import { ArrowRight, Download, Github, Linkedin } from 'lucide-react';
+import { ArrowRight, Mail, Github, Linkedin } from 'lucide-react';
 import leetcodeIcon from '../assets/icons8-leetcode-24.png';
 
 /* ─── Floating Particle ─────────────────────────────────────── */
@@ -257,7 +257,7 @@ const Hero = () => {
                   className="absolute inset-0 bg-indigo-900/20 opacity-0 group-hover:opacity-100 transition-opacity"
                 />
                 <span className="relative flex items-center gap-3">
-                  <Download className="w-5 h-5" />
+                  <Mail className="w-5 h-5" />
                   Contact Me
                 </span>
               </MagneticBtn>
