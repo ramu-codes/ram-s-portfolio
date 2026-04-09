@@ -197,7 +197,7 @@ const Skills = () => {
             animate={headingInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
             transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             className="text-5xl md:text-7xl font-black tracking-tight leading-tight mb-4"
-            style={{ fontFamily: "Georgia, serif", color: "#f1f5f9" }}
+            style={{ color: "#f1f5f9" }}
           >
             Skills{" "}
             <span

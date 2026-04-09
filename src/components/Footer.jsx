@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, ArrowUp, Heart } from "lucide-react";
 
 const socials = [
-  { icon: Github, href: "https://github.com/dashboard", label: "GitHub" },
+  { icon: Github, href: "https://github.com/ramu-codes", label: "GitHub" },
   { icon: Linkedin, href: "https://www.linkedin.com/in/ramu-chaurasiya-8b9933295/", label: "LinkedIn" },
   { icon: Mail, href: "mailto:ramucodes@gmail.com", label: "Email" },
 ];

@@ -9,11 +9,11 @@ import Hero from './pages/Hero'; // Import the new Hero component
 
 function App() {
   return (
-    <div className="relative">
+    <div className="relative min-h-screen bg-[rgb(26,38,55)] text-slate-100">
       <Navbar />
 
       {/* The pt-16 ensures content starts below the fixed navbar */}
-      <div className="pt-16"> 
+      <div className="pt-16">
         <main>
           <Hero />
             <About />

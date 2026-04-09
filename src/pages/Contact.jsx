@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import emailjs from "emailjs-com";
 import { motion, useInView } from "framer-motion";
 import {
-  Mail, Linkedin, Github, Phone, MapPin,
+  Mail, Linkedin, Github, MapPin,
   Send, CheckCircle, AlertCircle, ArrowRight, Copy, Check,
 } from "lucide-react";
 
@@ -75,6 +75,9 @@ const CopyEmail = () => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
+    if (!navigator?.clipboard) {
+      return;
+    }
     navigator.clipboard.writeText(EMAIL);
     setCopied(true);
     setTimeout(() => setCopied(false), 2200);
@@ -178,13 +181,22 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setStatus("sending");
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 5000);
+      return;
+    }
 
     emailjs
       .sendForm(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        serviceId,
+        templateId,
         e.target,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        publicKey
       )
       .then(() => {
         setStatus("success");

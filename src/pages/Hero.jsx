@@ -54,7 +54,7 @@ const Cursor = () => (
 );
 
 /* ─── Magnetic Button ────────────────────────────────────────── */
-const MagneticBtn = ({ children, className, href, download }) => {
+const MagneticBtn = ({ children, className, href, download, target, rel }) => {
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -77,6 +77,8 @@ const MagneticBtn = ({ children, className, href, download }) => {
       ref={ref}
       href={href}
       download={download}
+      target={target}
+      rel={rel}
       style={{ x: sx, y: sy }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -248,8 +250,7 @@ const Hero = () => {
               </MagneticBtn>
 
               <MagneticBtn
-                href="/resume.pdf"
-                download
+                href="#contact"
                 className="group relative px-10 py-4 border-2 border-slate-500 text-slate-200 font-bold rounded-xl hover:border-indigo-500 hover:text-white transition-colors overflow-hidden"
               >
                 <motion.span
@@ -257,7 +258,7 @@ const Hero = () => {
                 />
                 <span className="relative flex items-center gap-3">
                   <Download className="w-5 h-5" />
-                  Download Resume
+                  Contact Me
                 </span>
               </MagneticBtn>
             </motion.div>
@@ -287,10 +288,20 @@ const Hero = () => {
               variants={itemVariants}
               className="flex justify-center lg:justify-start gap-6"
             >
-              <MagneticBtn href="https://github.com/ramu-codes" className="p-3 bg-slate-800/50 rounded-full text-slate-300 hover:text-white hover:bg-indigo-600 transition-colors">
+              <MagneticBtn
+                href="https://github.com/ramu-codes"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-slate-800/50 rounded-full text-slate-300 hover:text-white hover:bg-indigo-600 transition-colors"
+              >
                 <Github className="w-6 h-6" />
               </MagneticBtn>
-              <MagneticBtn href="https://www.linkedin.com/in/ramu-chaurasiya-/" className="p-3 bg-slate-800/50 rounded-full text-slate-300 hover:text-white hover:bg-indigo-600 transition-colors">
+              <MagneticBtn
+                href="https://www.linkedin.com/in/ramu-chaurasiya-/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-slate-800/50 rounded-full text-slate-300 hover:text-white hover:bg-indigo-600 transition-colors"
+              >
                 <Linkedin className="w-6 h-6" />
               </MagneticBtn>
               
