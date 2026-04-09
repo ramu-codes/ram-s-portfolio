@@ -18,14 +18,16 @@ Both now pass successfully.
    - Footer GitHub link corrected from dashboard URL to profile URL.
    - Added **Contact** item to navbar for complete navigation.
    - Replaced missing resume file actions (`/resume.pdf` did not exist) with working **Contact** CTAs.
-   - Updated project cards to avoid dead links:
-     - Real links used where available.
-     - “Coming Soon” state shown where live link is unavailable.
+   - Updated project cards to avoid dead/misleading links:
+     - If a project repo/demo URL is unavailable, the card now shows **Coming Soon** instead of linking to unrelated pages.
    - Ensured external project/social links open safely in new tab with `noopener noreferrer`.
 
 3. **Contact form reliability improved**
-   - Added guard for missing EmailJS environment variables before submit.
-   - Added clipboard availability check before copy-email action.
+- Added guard for missing EmailJS environment variables before submit.
+- Added clipboard availability check before copy-email action.
+- Added clearer user feedback for:
+  - clipboard unsupported environments,
+  - missing email service configuration.
    - This prevents runtime failures in unsupported or misconfigured environments.
 
 ## Design consistency and modern UI improvements
