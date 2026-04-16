@@ -1,8 +1,8 @@
 // src/pages/Hero.jsx
-import React, { useRef } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { motion, useMotionValue, useSpring , AnimatePresence } from 'framer-motion';
 import avatarPlaceholder from '../assets/profile-pic.jpg';
-import { ArrowRight, Mail, Github, Linkedin } from 'lucide-react';
+import { ArrowRight, Mail, Github, Linkedin , Download ,X } from 'lucide-react';
 import leetcodeIcon from '../assets/icons8-leetcode-24.png';
 
 /* ─── Floating Particle ─────────────────────────────────────── */
@@ -25,6 +25,9 @@ const Particle = ({ x, y, size, duration, delay, color }) => (
   />
 );
 
+
+
+
 /* ─── OrbitRing ──────────────────────────────────────────────── */
 const OrbitRing = ({ size, duration, delay, color, clockwise = true }) => (
   <motion.div
@@ -43,6 +46,8 @@ const OrbitRing = ({ size, duration, delay, color, clockwise = true }) => (
     transition={{ duration, delay, repeat: Infinity, ease: 'linear' }}
   />
 );
+
+ 
 
 /* ─── Typing Cursor ──────────────────────────────────────────── */
 const Cursor = () => (
@@ -123,6 +128,7 @@ const itemVariants = {
 
 /* ─── Hero ───────────────────────────────────────────────────── */
 const Hero = () => {
+  const [open, setOpen] = useState(false);
   return (
     <section
       id="home"
@@ -261,6 +267,123 @@ const Hero = () => {
                   Contact Me
                 </span>
               </MagneticBtn>
+
+              {/*//resume download button start*/}
+                    {/* ── Main Button ── */}
+      <div
+        onClick={() => setOpen(true)}
+        className="relative w-72 h-[72px] rounded-full 
+        bg-white/[0.06] border border-white/[0.12] 
+        flex items-center overflow-hidden 
+        shadow-[0_4px_24px_rgba(0,0,0,0.4)] 
+        cursor-pointer group"
+      >
+        {/* Download circle */}
+        <a
+          href="/resume.pdf"
+          download
+          onClick={(e) => e.stopPropagation()}
+          className="absolute left-2 top-1/2 -translate-y-1/2
+          w-14 h-14 rounded-full z-10 flex items-center justify-center
+          bg-gradient-to-br from-indigo-500 to-emerald-500
+          shadow-[0_0_20px_rgba(99,102,241,0.55)]
+          hover:scale-110 hover:shadow-[0_0_28px_rgba(99,102,241,0.75)]
+          transition-all duration-200"
+        >
+          <Download className="w-5 h-5 text-white" />
+        </a>
+
+        {/* Label */}
+        <span
+          className="flex-1 text-center pl-2 text-white/85 
+          group-hover:text-white text-base font-semibold 
+          tracking-widest transition-colors duration-150 select-none"
+        >
+          Resume
+        </span>
+      </div>
+
+      {/* ── Modal ── */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center
+            bg-black/65 backdrop-blur-[14px]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpen(false)}
+          >
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              className="w-[min(92vw,560px)] bg-[#0f172a]
+              border border-white/[0.12] rounded-[20px]
+              shadow-[0_32px_80px_rgba(0,0,0,0.7)] overflow-hidden"
+              initial={{ scale: 0.7, y: 40, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.7, y: 40, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
+              {/* Header */}
+              <div
+                className="flex items-center justify-between
+                px-5 py-3 border-b border-white/[0.08] bg-white/[0.03]"
+              >
+                <div className="flex gap-1.5">
+                  <span className="w-3 h-3 rounded-full bg-red-500" />
+                  <span className="w-3 h-3 rounded-full bg-yellow-400" />
+                  <span className="w-3 h-3 rounded-full bg-green-500" />
+                </div>
+
+                <span className="text-white text-sm font-semibold">
+                  My Resume
+                </span>
+
+                <button
+                  onClick={() => setOpen(false)}
+                  className="w-8 h-8 rounded-full flex items-center justify-center
+                  bg-white/[0.07] border border-white/[0.12] text-white/70
+                  hover:bg-red-500/25 hover:text-white transition-all"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Body */}
+                        <iframe
+            src="public/resume.pdf"
+            className="w-full h-[400px] rounded-xl border border-white/10"
+            title="Resume Preview"
+          />
+
+                {/* Buttons */}
+                <div className="flex gap-3 justify-end">
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="px-5 py-2 rounded-lg text-sm
+                    bg-white/[0.07] border border-white/[0.12]
+                    text-white hover:bg-white/[0.12]"
+                  >
+                    Close
+                  </button>
+
+                  <a
+                    href="/resume.pdf"
+                    download
+                    className="px-5 py-2 rounded-lg text-sm text-white
+                    bg-gradient-to-r from-indigo-500 to-emerald-500
+                    hover:scale-105 transition-all"
+                  >
+                    Download PDF
+                  </a>
+                </div>
+               
+            </motion.div>
+           </motion.div>
+        )}
+      </AnimatePresence>
+                   
+              {/*//resume download button end*/}
             </motion.div>
 
             {/* Stats */}
@@ -346,7 +469,7 @@ const Hero = () => {
                 animate={{ rotate: 360 }}
                 transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
               />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-emerald-300 text-xs font-bold uppercase tracking-widest rotate-[-30deg] pointer-events-none">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] text-xs font-semibold uppercase tracking-widest rotate-[-30deg] pointer-events-none">
                 Open to Work
               </div>
 
@@ -371,7 +494,7 @@ const Hero = () => {
                 transition={{ delay: 1.7, type: 'spring', stiffness: 150, y: { duration: 3, repeat: Infinity, ease: 'easeInOut' } }}
                 whileHover={{ scale: 1.1 }}
               >
-                <span className="text-6xl font-bold text-indigo-200">#Opentowork</span>
+                <span className="text-3xl font-bold text-indigo-200">#Opentowork</span>
               </motion.div>
             </motion.div>
           </motion.div>

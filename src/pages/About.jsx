@@ -357,9 +357,9 @@ const About = () => {
 
             <div className="md:col-span-2 grid grid-cols-2 gap-4">
               {[
-                { value: "15+", label: "Projects", color: "#818cf8" },
-                { value: "300+", label: "DSA Problems", color: "#34d399" },
-                { value: "8.05", label: "CGPA", color: "#a78bfa" },
+                { value: "10+", label: "Projects", color: "#818cf8" },
+                { value: "100+", label: "DSA Problems", color: "#34d399" },
+                { value: "8.00", label: "CGPA", color: "#a78bfa" },
                 { value: "1+", label: "Internship", color: "#facc15" },
               ].map((s, i) => (
                 <motion.div
