@@ -351,7 +351,7 @@ const Hero = () => {
 
               {/* Body */}
                         <iframe
-            src="public/resume.pdf"
+            src="resume.pdf"
             className="w-full h-[400px] rounded-xl border border-white/10"
             title="Resume Preview"
           />
